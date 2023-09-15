@@ -33,6 +33,32 @@ let qrval_small_image_param = {
 	}
 };
 
+
+var goToTop = function() {
+	$('.js-gotop').on('click', function(event){
+
+		event.preventDefault();
+
+		$('html, body').animate({
+			scrollTop: $('html').offset().top
+		}, 500, 'easeInOutExpo');
+
+		return false;
+	});
+
+	$(window).scroll(function(){
+
+		var $win = $(window);
+		if ($win.scrollTop() > 200) {
+			$('.js-top').addClass('active');
+		} else {
+			$('.js-top').removeClass('active');
+		}
+
+	});
+};
+
+
 function showLoader() {
 	$("#loading").show();
 }
@@ -310,30 +336,6 @@ function sendApplicationData(form_id, token)
 	
 }
 
-
-var goToTop = function() {
-	$('.js-gotop').on('click', function(event){
-
-		event.preventDefault();
-
-		$('html, body').animate({
-			scrollTop: $('html').offset().top
-		}, 500, 'easeInOutExpo');
-
-		return false;
-	});
-
-	$(window).scroll(function(){
-
-		var $win = $(window);
-		if ($win.scrollTop() > 200) {
-			$('.js-top').addClass('active');
-		} else {
-			$('.js-top').removeClass('active');
-		}
-
-	});
-};
 
 function validateNumber(event) {
     var key = window.event ? event.keyCode : event.which;
