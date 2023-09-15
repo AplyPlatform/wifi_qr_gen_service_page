@@ -1,3 +1,7 @@
+
+let isRecaptchaInit = false;
+
+
 let qrCodeSmall;
 let qrval_small_image_param = {
 	width: 250,
@@ -54,6 +58,10 @@ const genQRCode = (qr_code_url) => {
 
 const initQRCode = () => {
 	showLoader();
+
+	grecaptcha.ready(function () {
+		isRecaptchaInit = true;			
+	});
 
 	qrCodeSmall = new QRCodeStyling(qrval_small_image_param);
 	qrCodeSmall.append(document.getElementById("qr_sm_image_1"));		
@@ -300,6 +308,63 @@ function sendApplicationData(form_id, token)
 		});
 	}
 	
+}
+
+
+var goToTop = function() {
+	$('.js-gotop').on('click', function(event){
+
+		event.preventDefault();
+
+		$('html, body').animate({
+			scrollTop: $('html').offset().top
+		}, 500, 'easeInOutExpo');
+
+		return false;
+	});
+
+	$(window).scroll(function(){
+
+		var $win = $(window);
+		if ($win.scrollTop() > 200) {
+			$('.js-top').addClass('active');
+		} else {
+			$('.js-top').removeClass('active');
+		}
+
+	});
+};
+
+function validateNumber(event) {
+    var key = window.event ? event.keyCode : event.which;
+    if (event.keyCode === 8 || event.keyCode === 46) {
+        return true;
+    } else if ( key < 48 || key > 57 ) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function setCaptcha(fd, successHandler, failHandler) {
+	if (isRecaptchaInit == false) {
+		grecaptcha.ready(function () {
+			isRecaptchaInit = true;
+			grecaptcha.execute('6LfPn_UUAAAAAN-EHnm2kRY9dUT8aTvIcfrvxGy7', { action: 'action_name' })
+				.then(function (token) {
+					fd.append("captcha_token", token);
+					ajaxRequest(fd, successHandler, failHandler);
+	
+				});
+		});
+	}
+	else {
+		grecaptcha.execute('6LfPn_UUAAAAAN-EHnm2kRY9dUT8aTvIcfrvxGy7', { action: 'action_name' })
+				.then(function (token) {
+					fd.append("captcha_token", token);
+					ajaxRequest(fd, successHandler, failHandler);	
+				});
+	}
 }
 
 function ajaxRequestForContact(form_id, fed) {
