@@ -198,8 +198,141 @@ const initQRCode = () => {
 			window.open(targetUrl, "_blank");
 	});
 
+	setSubmitHandler("email_up");
+	goToTop();
+
 })(jQuery);
 
+
+function setSubmitHandler(form_p_id) {
+	var form_id = "#" + form_p_id;
+
+	$(form_id + "_send").on("click", function(e) {
+		e.preventDefault();
+
+		if (appSent == true) {
+			if (confirm('이미 전송한 내용이 있습니다. 다시 진행 하시겠습니까?')) {	}
+			else {
+			  return;
+			}
+		}
+
+		showLoader();
+
+		sendApplicationData(form_id);				
+	});
+
+	$('[name^=form_phone]').keypress(validateNumber);
+}
+
+var appSent = false;
+function sendApplicationData(form_id, token)
+{
+	let min_type = "";
+	if ($(form_id).find('input[name="min_type_1"]').is(":checked")) {
+		min_type = "/SW개발";
+	}
+
+	if ($(form_id).find('input[name="min_type_2"]').is(":checked")) {
+		min_type = min_type + "/제휴 및 협업";
+	}
+
+	if ($(form_id).find('input[name="min_type_4"]').is(":checked")) {
+		min_type = min_type + "/기타 문의";
+	}
+
+	if (min_type == "") {
+		showDialog("문의 종류를 선택해 주세요.", null);
+		hideLoader();
+		return false;
+	}
+
+	let form_content = $("#form_content").val();
+	if (form_content == "") {
+		showDialog("문의 내용을 입력해 주세요.", null);
+		hideLoader();
+		return false;
+	}
+
+	let form_phone = $(form_id).find('input[name="form_phone"]').val();
+	if (form_phone == "") {
+		showDialog("전화번호를 입력해 주세요.", null);
+		hideLoader();
+		return false;
+	}
+
+	let form_email = $(form_id).find('input[name="form_email"]').val();
+	if (form_email == "") {
+		showDialog("이메일을 입력해 주세요.", null);
+		hideLoader();
+		return false;
+	}
+
+	if ($(form_id).find("#agree_1").length > 0 && $(form_id).find("#agree_1").is(":checked") == false) {
+		showDialog("개인정보 처리방침에 동의해주세요.", null);
+		hideLoader();
+		return false;
+	}	
+	
+	let ref = $('<input type="hidden" value="' + document.referrer + '" name="ref">');	
+	$(form_id).append(ref);	
+	ref = $('<input type="hidden" value="' + min_type + '" name="min_type">');	
+	$(form_id).append(ref);	
+	ref = $('<input type="hidden" value="wificontact" name="form_kind">');	
+	$(form_id).append(ref);
+
+	if (isRecaptchaInit == false) {
+		grecaptcha.ready(function() {
+			isRecaptchaInit = true;
+
+			grecaptcha.execute('6LfPn_UUAAAAAN-EHnm2kRY9dUT8aTvIcfrvxGy7', {action: 'homepage'}).then(function(token) {
+				$(form_id).find('input[name="form_token"]').val(token);
+				let fed = new FormData($(form_id)[0]);
+				ajaxRequestForContact(form_id, fed);
+			});
+		});
+	}
+	else {
+		grecaptcha.execute('6LfPn_UUAAAAAN-EHnm2kRY9dUT8aTvIcfrvxGy7', {action: 'homepage'}).then(function(token) {
+			$(form_id).find('input[name="form_token"]').val(token);
+			let fed = new FormData($(form_id)[0]);
+			ajaxRequestForContact(form_id, fed);
+		});
+	}
+	
+}
+
+function ajaxRequestForContact(form_id, fed) {
+	$.ajax({
+		type: "POST",
+		url: 'https://aply.biz/contact/handler.php',
+		crossDomain: true,
+		dataType: "json",
+		data:fed,
+		enctype: 'multipart/form-data', // 필수
+		processData: false,
+		contentType: false,
+		cache: false,
+		success: function (data) {
+			hideLoader();
+			if (data.result == "success") {
+				$(form_id + " input").last().remove();
+				showDialog("전송이 완료되었습니다. APLY가 연락 드리겠습니다.", function() {
+					location.href="/index.html";
+				});
+				return;
+			}
+			else {				
+				showDialog("오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.", null);
+				return;
+			}
+		},
+		error: function(jqXHR, text, error){
+			showDialog("죄송합니다, 일시적인 오류가 발생하였습니다. 다시 시도 부탁드립니다.", null);
+			hideLoader();
+		}
+	});
+}
 
 function GATAGM(event_name, category, label) {    
     gtag(
