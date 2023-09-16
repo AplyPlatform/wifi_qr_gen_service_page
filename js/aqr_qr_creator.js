@@ -454,5 +454,6 @@ const targetsInfo = [
 	["catchme", "https://catchme.aply.biz"],
 	["kiosk", "https://kiosk.aply.biz"],
 	["polaris", "https://polarisconsulting.modoo.at"],
-	["gps", "https://gps.aply.biz"]
+	["gps", "https://gps.aply.biz"],
+	["store", "https://smartstore.naver.com/aqr"]
 ];
