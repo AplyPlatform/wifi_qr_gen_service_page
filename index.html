@@ -120,8 +120,8 @@
 							<div class="col-md-12 mb-4">
 								<div class="card h-100 py-2">
 									<div class="card-body">									
-										<div class="row">								
-											<div class="col-sm-3 text-left">
+										<div class="row">
+											<div class="col-sm-4 text-left">
 												<div class="form-group has-feedback">
 													<label for="form_ssid" class="control-label">SSID</label>
 													<div class="input-group">
@@ -132,25 +132,25 @@
 													&nbsp;<input type="checkbox" name="form_hidden" id="form_hidden" data-toggle="tooltip" title="SSID가 숨겨져 있음">
 												</div>
 											</div>								
-											<div class="col-sm-3 text-left">
+											<div class="col-sm-4 text-left">
 												<div class="form-group">
 													<label for="form_enc" class="control-label">암호화 방법</label>
-													<div class="input-group">
-														<select name="form_enc" id="form_enc" class="form-control">
-															<option value="WPA">WPA/WPA2/WPA3</option>
-															<option value="WEP">WEP</option>
-															<option value="nopass">None</option>
-														</select>
-													</div>
+													<select name="form_enc" id="form_enc" class="form-control">
+														<option value="WPA">WPA/WPA2/WPA3</option>
+														<option value="WEP">WEP</option>
+														<option value="nopass">None</option>
+													</select>
 												</div>									
 											</div>								
-											<div class="col-sm-3 text-left">
-												<label for="form_password" class="form-label">패스워드</label>
-												<br>
-												<input type="text" id="form_password" name="form_password" class="form-control" value="" placeholder="PASSWORD">									
-											</div>
-											<div class="col-sm-3">
-												<br>
+											<div class="col-sm-4 text-left">
+												<div class="form-group">
+													<label for="form_password" class="form-label">패스워드</label>
+													<input type="text" id="form_password" name="form_password" class="form-control" value="" placeholder="PASSWORD">
+												</div>
+											</div>											
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
 												<button type="button" class="btn btn-info btn-block" id="applyWiFiButton">만들기</button>
 											</div>
 										</div>
@@ -183,7 +183,11 @@
 												</div>
 												<div class="col-sm-3">
 													<label for="form_qr_shape" class="form-label" langid="msg_mgr_qr_dot_shape">격자 모양</label>
-													<select class="form-control" id="form_qr_shape"></select>
+													<select class="form-control" id="form_qr_shape">
+														<option value="dots">동그라미</option>
+														<option value="square" selected>사각형</option>
+														<option value="extra-rounded">약간둥글게</option>
+													</select>
 												</div>
 												<div class="col-sm-3 text-left">
 													<label for="qr_image_input" class="form-label" langid="msg_mgr_qr_set_image">이미지 설정</label><br>
@@ -191,13 +195,20 @@
 													<input type="file" id="qr_image_input" name="qr_image_input" style="width:100%" accept="image/*">
 												</div>
 											</div>
-											<div class="row" style="margin-top:10px;">
-												<div class="col-sm-6 text-center"></div>
-												<div class="col-sm-3 text-right">
-													<select class="form-control" id="form_image_kind"></select>
-												</div>
-												<div class="col-sm-3 text-left">
-													<a id="downloadButton" download="AQR.png" class="btn btn-warning btn-block" role="button" style="color:#fff" langid="msg_qr_download">다운로드</a><br>
+											<div class="row" style="margin-top:10px;">												
+												<div class="col-sm-12">
+													<div class="dropdown">
+														<button class="btn btn-warning dropdown-toggle btn-block float-right" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															<i class="fa fa-download"></i> 다운로드</span>
+														</button>
+														<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+															<ul>																
+																<li class="dropdown-item"><HR><a class="qrDownloadButton" id_val="png" style="cursor:pointer;font-size:16px;">PNG파일 받기</a><HR></li>
+																<li class="dropdown-item"><a class="qrDownloadButton" id_val="jpg" style="cursor:pointer;font-size:16px;">JPG파일 받기</a><HR></li>
+																<li class="dropdown-item"><a class="qrDownloadButton" id_val="svg" style="cursor:pointer;font-size:16px;">SVG파일 받기</a><HR></li>
+															</ul>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -253,16 +264,20 @@
 								<div class="form-control" style="height:auto; padding-bottom:.05rem;">
 								<div class="row">                                
 								  <div class="col-12 col-md-3 p-b-10">
-									  <input type="checkbox" id="min_type_4" name="min_type_4" value="기타">
-									  <label class="lab_check" for="min_type_4"><span class="checkbox"></span> &nbsp;서비스 문의</label>
+									  <input type="checkbox" id="min_type_1" name="min_type_1" value="기타">
+									  <label class="lab_check" for="min_type_1"><span class="checkbox"></span> &nbsp;서비스 문의</label>
 								  </div>								  
 								  <div class="col-12 col-md-3 p-b-10">
 									<input type="checkbox" id="min_type_2" name="min_type_2" value="제휴">
 									<label class="lab_check" for="min_type_2"><span class="checkbox"></span> &nbsp;제휴 및 협업</label>
 								  </div>
 								  <div class="col-12 col-md-3 p-b-10">
-									<input type="checkbox" id="min_type_1" name="min_type_1" value="SW개발"> 
-									<label class="lab_check" for="min_type_1"><span class="checkbox"></span> &nbsp;SW 개발</label>
+									<input type="checkbox" id="min_type_3" name="min_type_3" value="SW개발"> 
+									<label class="lab_check" for="min_type_3"><span class="checkbox"></span> &nbsp;SW 개발</label>
+								  </div>
+								  <div class="col-12 col-md-3 p-b-10">
+									<input type="checkbox" id="min_type_4" name="min_type_4" value="기타문의"> 
+									<label class="lab_check" for="min_type_4"><span class="checkbox"></span> &nbsp;기타 문의</label>
 								  </div>
 								</div>
 								<p class="help-block text-danger"></p>
@@ -434,8 +449,7 @@
 	<script src="./js/printThis.js"></script>
 	<script src="./js/qr-code-styling.js"></script>
 	<script src="./js/cropper.js"></script>
-	<script src="./js/ol.js"></script>  	
-  	<script src="./js/aqr_qr_creator.js"></script>
-
+	<script src="./js/ol.js"></script>
+  	<script src="./js/aqr_qr_creator.js?v=20230917"></script>
 	</body>
 </html>

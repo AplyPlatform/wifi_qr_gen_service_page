@@ -102,9 +102,9 @@ const initQRCode = () => {
 	  qrCodeSmall.update({backgroundOptions : {color : colorInputbg.value}});
 	});
 
-	$("#downloadButton").click(function () {
-		let form_image_kind = $("#form_image_kind option:selected").val();
-		qrCodeSmall.download({ name: "AQR", extension: form_image_kind });
+	$(".qrDownloadButton").click(function () {    
+		let form_image_kind = $(this).attr("id_val");
+		qrCodeSmall.download({ name: "QR", extension: form_image_kind });
 	});
 
 	$("#form_qr_shape").change(function() { 
@@ -210,14 +210,6 @@ const initQRCode = () => {
 		genQRCode(genStr);
 	});
 
-	$("#form_qr_shape").append('<option value="dots">동그라미</option>');
-    $("#form_qr_shape").append('<option value="square" selected>사각형</option>');
-    $("#form_qr_shape").append('<option value="extra-rounded">약간둥글게</option>');
-
-	$("#form_image_kind").append('<option value="png">PNG</option>');
-    $("#form_image_kind").append('<option value="jpg">JPG</option>');
-    $("#form_image_kind").append('<option selected value="svg">SVG</option>');
-
 	$('#selSites').change(function () {
 		let targetVal = $(this).val();
 		let targetUrl = "";
@@ -264,15 +256,19 @@ function sendApplicationData(form_id, token)
 {
 	let min_type = "";
 	if ($(form_id).find('input[name="min_type_1"]').is(":checked")) {
-		min_type = "/SW개발";
+		min_type = "/서비스문의";
 	}
 
 	if ($(form_id).find('input[name="min_type_2"]').is(":checked")) {
-		min_type = min_type + "/제휴 및 협업";
+		min_type = min_type + "/제휴및협업";
+	}
+
+	if ($(form_id).find('input[name="min_type_3"]').is(":checked")) {
+		min_type = min_type + "/SW개발";
 	}
 
 	if ($(form_id).find('input[name="min_type_4"]').is(":checked")) {
-		min_type = min_type + "/기타 문의";
+		min_type = min_type + "/기타문의";
 	}
 
 	if (min_type == "") {
@@ -332,8 +328,7 @@ function sendApplicationData(form_id, token)
 			let fed = new FormData($(form_id)[0]);
 			ajaxRequestForContact(form_id, fed);
 		});
-	}
-	
+	}	
 }
 
 
