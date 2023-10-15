@@ -35,8 +35,8 @@ let qrval_small_image_param = {
 
 let qrCodeBig;
 let qrval_big_image_param = {
-	width: 1024,
-	height: 1024,
+	width: 640,
+	height: 640,
 	image: null,
 	type: "canvas",
 	data: "",
@@ -63,7 +63,6 @@ let qrval_big_image_param = {
 		type: "square"
 	}
 };
-
 
 var goToTop = function() {
 	$('.js-gotop').on('click', function(event){
